@@ -59,7 +59,7 @@ export default function App() {
           <BodyWrapper>
             <Body>
               <Web3ReactManager>
-                <BrowserRouter>
+                <BrowserRouter basename={`${window.location.pathname}#`}>
                   <NavigationTabs />
                   {/* this Suspense is for route code-splitting */}
                   <Suspense fallback={null}>

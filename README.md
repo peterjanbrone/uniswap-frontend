@@ -1,49 +1,66 @@
-# Uniswap Frontend
+# Skynet Uniswap Frontend Demo
 
-[![Netlify Status](https://api.netlify.com/api/v1/badges/fa110555-b3c7-4eeb-b840-88a835009c62/deploy-status)](https://app.netlify.com/sites/uniswap/deploys)
-[![Build Status](https://travis-ci.org/Uniswap/uniswap-frontend.svg)](https://travis-ci.org/Uniswap/uniswap-frontend)
-[![Styled With Prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg)](https://prettier.io/)
+This is a demo on how to run the [Uniswap Frontend](https://github.com/Uniswap/uniswap-frontend) on [Skynet](https://siasky.net).  
+To run the Uniswap Frontend on Skynet, we need to do some minor tweaks to ensure the Dapp navigates relative to the Skyink URL on Skynet.
 
-This an an open source interface for Uniswap - a protocol for decentralized exchange of Ethereum tokens.
+## Required Changes
 
-- Website: [uniswap.io](https://uniswap.io/)
-- Docs: [docs.uniswap.io](https://docs.uniswap.io/)
-- Twitter: [@UniswapExchange](https://twitter.com/UniswapExchange)
-- Reddit: [/r/Uniswap](https://www.reddit.com/r/UniSwap/)
-- Email: [contact@uniswap.io](mailto:contact@uniswap.io)
-- Discord: [Uniswap](https://discord.gg/Y7TF6QA)
-- Whitepaper: [Link](https://hackmd.io/C-DvwDSfSxuh-Gd4WKE_ig)
-  
-## Run Uniswap Locally
- 
-1. Download and unzip the `build.zip` file from the latest release in the [Releases tab](https://github.com/Uniswap/uniswap-frontend/releases/latest).
+In `App.js`, update the `BrowserRouter` basename, so all locations point to Skynet as their base URL.
+```
+<BrowserRouter basename={`${window.location.pathname}#`}>
+```
 
-2. Serve the `build/` folder locally, and access the application via a browser.
+In `src/i18n.js`, update the `loadPath` so it loads the locale from a relative path, rather than an absolute path.
+```
+i18next
+  ...
+  .init({
+    backend: {
+      loadPath: './locales/{{lng}}.json'
+    },
+```
 
-For more information on running a local server see [https://developer.mozilla.org/en-US/docs/Learn/Common_questions/set_up_a_local_testing_server](https://developer.mozilla.org/en-US/docs/Learn/Common_questions/set_up_a_local_testing_server). This simple approach has one downside: refreshing the page will give a `404` because of how React handles client-side routing. To fix this issue, consider running `serve -s` courtesy of the [serve](https://github.com/zeit/serve) package.
-  
-## Develop Uniswap Locally
+In `package.json`, update the `homepage` so the App is built using a relative path, rather than the root.
+```
+{
+  ...
+  "homepage": ".",
+  ...
+```
+
+## Configuration
+
+The Uniswap Frontend requires some environment variables to be set, in order for it to function.
+You will find these in `.env.local.example`. Simply copy this file to `.env.local` and fill them out.
+
+```
+REACT_APP_CHAIN_ID="1"
+REACT_APP_NETWORK_URL=""
+REACT_APP_PORTIS_ID=""
+REACT_APP_FORTMATIC_KEY=""
+REACT_APP_IS_PRODUCTION_DEPLOY="false"
+```
+
+## Deployment
+
+Deploying the Uniswap Frontend is very easy. First we need to build the project using `yarn`.
+Before you continue, make sure you have completed the required changes, and have a valid configuration.
 
 ### Install Dependencies
-
 ```bash
 yarn
 ```
 
-### Configure Environment
-
-Rename `.env.local.example` to `.env.local` and fill in the appropriate variables.
-
-### Run
-
+### Build Project
 ```bash
-yarn start
+yarn build
 ```
 
-To run on a testnet, make a copy of `.env.local.example` named `.env.local`, change `REACT_APP_NETWORK_ID` to `"{yourNetworkId}"`, and change `REACT_APP_NETWORK_URL` to e.g. `"https://{yourNetwork}.infura.io/v3/{yourKey}"`.
+### Deploy to Skynet
 
-If deploying with Github Pages, be aware that there's some [tricky client-side routing behavior with `create-react-app`](https://create-react-app.dev/docs/deployment#notes-on-client-side-routing).
+You can deploy the dapp to Skynet by uploading the entire buildfolder at siasky.net.
+This will give you a skylink, which houses your dapp. To access the Uniswap Frontend,
+simply navigate to `https://siasky.net/[skylink]/build/index.html`.
 
-## Contributions
-
-**Please open all pull requests against the `beta` branch.** CI checks will run against all PRs. To ensure that your changes will pass, run `yarn check:all` before pushing. If this command fails, you can try to automatically fix problems with `yarn fix:all`, or do it manually.
+## SkyDapp URL
+https://siasky.dev/EAByx9EagK71BoS1za93Q9s0l7xSe7VG6P8aUEtJK4mmDQ/build/index.html
