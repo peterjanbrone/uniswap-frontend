@@ -63,4 +63,4 @@ This will give you a skylink, which houses your dapp. To access the Uniswap Fron
 simply navigate to `https://siasky.net/[skylink]/build/index.html`.
 
 ## SkyDapp URL
-https://siasky.net/EAByx9EagK71BoS1za93Q9s0l7xSe7VG6P8aUEtJK4mmDQ/build/index.html#/swap
+https://siasky.net/EAC5HJr5Pu086EAZG4fP_r6Pnd7Ft366vt6t2AnjkoFb9Q/index.html
